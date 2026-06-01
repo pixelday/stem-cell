@@ -16,7 +16,7 @@ One of the core tenets of this project is that front-end web code (HTML in parti
 
 While HTML and CSS are straightforward technologies for engineering teams to understand, they are easy to underestimate, hard to master, and so often neglected.
 
-We are aiming for the output of this framework to be **WCAG 2.2 Level AAA conformant out of the box**, with one important and honest caveat. W3C/WAI itself notes that AAA is *not* recommended as a blanket requirement for entire sites, because some AAA success criteria simply cannot be satisfied for all types of content. So we treat AAA as a **shared responsibility**:
+We are aiming for the output of this framework to **meet WCAG 2.2 Level AAA out of the box**, with one important caveat. W3C/WAI notes that AAA is *not* recommended as a blanket requirement for entire sites, because some AAA success criteria cannot be satisfied for all types of content. So we treat AAA as a **shared responsibility**:
 
 - **Stem Cell guarantees** the criteria a framework can control through its defaults and components. These include 2.1.3 Keyboard (No Exception), 2.2.3 No Timing, 2.3.2 Three Flashes, and 2.4.10 Section Headings.
 - **Stem Cell enables** the remaining, content-dependent criteria so they are achievable by the author rather than fought against. These include 1.4.6 Contrast (Enhanced), 1.4.8 Visual Presentation, 1.4.9 Images of Text, 3.1.5 Reading Level, 2.4.9 Link Purpose (Link Only), the time-based-media criteria, and 3.3.6 Error Prevention (All).
@@ -30,7 +30,7 @@ Stem Cell's design layer is token-driven and built from the same first principle
 Note that this section of content is an early work in progress. While the color system below is currently the most fully specified piece, the remaining areas are planned and will be expanded incrementally as the library is being developed:
 
 - **Token taxonomy beyond color** (planned): type scale, spacing, line length, focus styles, and motion, including the constraints that back specific AAA criteria (for example, the line-length and spacing requirements in 1.4.8 Visual Presentation).
-- **Component acceptance criteria** (planned): the bar a component must clear to be considered done, such as a documented keyboard model per the ARIA Authoring Practices Guide, reduced-motion and forced-colors behavior, a no-JavaScript fallback, and AAA contrast across every background family.
+- **Component acceptance criteria** (planned): the bar a component must clear to be considered done, such as a documented keyboard model per the ARIA Authoring Practices Guide, reduced-motion and forced-colors behavior, a no-JavaScript fallback, accessible error handling for form components (error identification, programmatic association of messages, and status-message announcement), and AAA contrast across every background family.
 - **Decision-making and curation** (planned): how token values are chosen, who signs off, and how trade-offs or exceptions are recorded.
 
 ### Color system
@@ -131,7 +131,7 @@ In addition, we run the following manual checks that automated tools largely can
 - **Text spacing:** apply the standard text-spacing overrides (line height 1.5×, paragraph spacing 2×, letter spacing 0.12×, word spacing 0.16×) with no clipping or overlap (1.4.12).
 - **Non-text contrast:** UI components, focus indicators, and meaningful graphics meet 3:1 (1.4.11).
 - **User preferences and forced colors:** correct behavior for `prefers-reduced-motion` (2.3.3) and `prefers-color-scheme`, plus Windows High Contrast / forced-colors mode (the `forced-colors` media query). The Chrome DevTools Rendering panel can emulate all three.
-- **Progressive enhancement:** the page remains usable and legible with JavaScript disabled, with CSS disabled, and with images off, a natural fit for a minimal-JS framework and the clearest proof that meaning lives in the markup.
+- **Progressive enhancement:** the page remains usable and legible with JavaScript disabled, with CSS disabled, and with images off, a natural fit for a minimal-JS framework and the clearest proof that meaning lives in the markup. A browser extension such as [Web Developer](https://chromewebstore.google.com/detail/web-developer/bfbameneiokkgbdmiekhjnmfkcnldhhm?hl=en-US) toggles each of these off from the toolbar, which is quicker than the equivalent browser settings.
 
 ## Assistive technology testing
 

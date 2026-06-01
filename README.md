@@ -1,10 +1,12 @@
 # Stem Cell
 
-A generic, accessible, standards-first front-end foundation that adapts to any brand through design tokens.
+**A generic, accessible, standards-first front-end foundation that adapts to any brand through design tokens.**
 
-A web framework designed and built by and for designers and front-end developers, with a strong emphasis on markup quality. Semantics, accessibility, SEO-friendliness, standards compliance, general best practices, and a best-in-class user experience are all essential, not optional.
+Stem Cell is a web framework designed and built by and for designers and front-end developers, with a strong emphasis on markup quality. Semantics, accessibility, SEO-friendliness, standards compliance, general best practices, and a best-in-class user experience are all essential.
 
-*Draft document; the library is pre-alpha and under active development. Last updated: May 31, 2026.*
+This document currently describes Stem Cell's design and evaluation process. Usage, installation, and contribution guides will follow.
+
+*Draft document. The library is pre-alpha and under active development. Last updated: May 31, 2026.*
 
 ## Philosophy
 
@@ -23,9 +25,9 @@ A note on terminology we try to keep straight throughout: WCAG defines **conform
 
 ## Design system
 
-Stem Cell's design layer is token-driven and built from the same first principles as its markup: start from a minimal, valid, accessible default, and let everything brand-specific flow from a small set of curated design tokens (CSS custom properties). Every value that ships in the default style is chosen and verified by a human designer, never auto-generated.
+Stem Cell's design layer is token-driven and built from the same first principles as its markup: start from a minimal, valid, accessible default, and let everything brand-specific flow from a small set of curated design tokens (CSS custom properties).
 
-This section is an early placeholder. The color system below is the first fully specified piece; the remaining areas are planned and will be expanded as the library moves out of pre-alpha:
+Note that this section of content is an early work in progress. While the color system below is currently the most fully specified piece, the remaining areas are planned and will be expanded incrementally as the library is being developed:
 
 - **Token taxonomy beyond color** (planned): type scale, spacing, line length, focus styles, and motion, including the constraints that back specific AAA criteria (for example, the line-length and spacing requirements in 1.4.8 Visual Presentation).
 - **Component acceptance criteria** (planned): the bar a component must clear to be considered done, such as a documented keyboard model per the ARIA Authoring Practices Guide, reduced-motion and forced-colors behavior, a no-JavaScript fallback, and AAA contrast across every background family.
@@ -33,11 +35,11 @@ This section is an early placeholder. The color system below is the first fully 
 
 ### Color system
 
-Color in Stem Cell is **background-driven**. Rather than hard-coding text colors, every content color is derived from the background color of the section it lives in, and each background/foreground pair is curated to meet AAA contrast minimums (7:1 for normal text, 4.5:1 for large text). We never ship a color in isolation; we only ship *pairs*, and every pair is verified against the WCAG 2.x contrast formula.
+Color in Stem Cell is **background-driven**. Rather than hard-coding text colors, every content color is derived from the background color of the section it lives in, and each background/foreground pair is curated to meet AAA contrast minimums (7:1 for normal text, 4.5:1 for large text). We never ship a color in isolation. We only ship *pairs*, and every pair is verified against the WCAG 2.x contrast formula.
 
-Colors are expressed as **design tokens via CSS custom properties**, organized into **families** rather than fixed values. A token like `--color-accent` doesn't resolve to a single hex value; it resolves to whichever member of the accent family is correctly paired with the current section background. Style a `<section>` with a black background and any `accent` content automatically inherits the accent value that maintains contrast against black; style it white and it inherits the white-paired value instead. The same idea extends to near-neutrals: an off-white or light-gray section (a common choice to complement pure-white sections, especially on marketing pages) shifts the accent slightly, still within the same family and still meeting contrast.
+Colors are expressed as **design tokens via CSS custom properties**, organized into **families** rather than fixed values. A token like `--color-accent` doesn't resolve to a single hex value. It resolves to whichever member of the accent family is correctly paired with the current section background. Style a `<section>` with a black background and any `accent` content automatically inherits the accent value that maintains contrast against black. Style it white and it inherits the white-paired value instead. The same idea extends to near-neutrals: an off-white or light-gray section (a common choice to complement pure-white sections, especially on marketing pages) shifts the accent slightly, still within the same family and still meeting contrast.
 
-The framework supports the `prefers-color-scheme` media query (and other `prefers-*` queries; see the testing notes below), so the light and dark families switch automatically with the user's stated preference.
+The framework supports the `prefers-color-scheme` media query (and other `prefers-*` queries, covered in the testing notes below), so the light and dark families switch automatically with the user's stated preference.
 
 Each default pairing below is anchored to its background color and meets the AAA contrast target for its role:
 
@@ -50,7 +52,7 @@ Each default pairing below is anchored to its background color and meets the AAA
 
 Large-text values may be lighter than normal-text values because AAA requires only 4.5:1 at large sizes, versus 7:1 for normal text. The 7:1 values are always safe to use at any size.
 
-These four are illustrative anchors, not the full set; each family carries additional members for the intermediate neutral backgrounds (light gray, dark gray, etc.). Every value that ships in the default style is curated and checked by a human designer; automated contrast math is necessary but not sufficient, so nothing enters the palette without a human sign-off.
+The above color values are a sample of our work-in-progress token set and are subject to change. Each family carries additional members for the intermediate neutral backgrounds (light gray, dark gray, etc.). Every value in the default palette is curated and validated by a human designer.
 
 *Contrast ratios are shown as reported by the WebAIM Contrast Checker, which truncates to two decimal places rather than rounding, so a displayed value never overstates the true ratio.*
 
@@ -58,22 +60,22 @@ These four are illustrative anchors, not the full set; each family carries addit
 
 ## Technology & scope
 
-Stem Cell is not built on any existing frameworks and does not require a build system. The current target is raw HTML, CSS, and (as minimal as possible) vanilla JavaScript. While we may expand in the future to an officially supported TSX/React implementation, that is out of scope for now.
+Stem Cell is not built on any existing frameworks and does not require a build system. The current target is raw HTML, CSS, and (as minimal as possible) vanilla JavaScript. While we may expand in the future to an officially supported TSX/React implementation, that is out of scope for this repository.
 
 ## Built from first principles
 
-The project started as a "hello world" page. It had the absolute bare minimum markup to validate across all tools tested. Starting from the first principles of "minimum code to remain valid and compliant and always shippable," every incremental change is thoroughly tested. This discipline builds toward the release gate described in the When we ship section below.
+This project started as a "hello world" page. It had the absolute bare minimum markup to validate across all tools tested. Starting from the first principles of "minimum code to remain valid and compliant and always shippable," every incremental change is thoroughly tested. This discipline builds toward the release gate described in the When we ship section below.
 
 ## Auditing tools
 
-These tools are all run manually today; there is no continuous-integration (CI) testing yet. The list below is what we currently use:
+These tools are all run manually today, with no continuous-integration (CI) testing yet. The list below is what we currently use:
 
 - [W3C Nu Html Checker](https://validator.w3.org/nu/): the live HTML5/CSS/SVG validator (the legacy [Markup Validation Service](https://validator.w3.org/) is effectively frozen)
 - [W3C CSS Validation Service (Jigsaw)](https://jigsaw.w3.org/css-validator/)
 - [WAVE](https://wave.webaim.org/extension/) (browser extension)
 - [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)
-- [axe DevTools](https://www.deque.com/axe/devtools/extension/chrome/) (browser extension; powered by the axe-core engine)
-- [Lighthouse](https://developer.chrome.com/docs/lighthouse) (in Chrome DevTools; its accessibility audits are powered by axe-core)
+- [axe DevTools](https://www.deque.com/axe/devtools/extension/chrome/) (browser extension, powered by the axe-core engine)
+- [Lighthouse](https://developer.chrome.com/docs/lighthouse) (in Chrome DevTools, with accessibility audits powered by axe-core)
 - [Microsoft Accessibility Insights](https://accessibilityinsights.io/) (automated checks plus a guided manual assessment)
 - [Markuplint Playground](https://playground.markuplint.dev/)
 - [Issues tab](https://developer.chrome.com/blog/issues-tab) in Chrome DevTools
@@ -89,7 +91,7 @@ It's worth stating plainly what that does and doesn't prove: a perfect automated
 
 Side note: We have not yet hit a case where two authoritative tools give conflicting recommendations, and we expect it to be rare. If it happens, accessibility wins, and W3C-developed tools carry more authority.
 
-## Browser testing regimen
+## Browser testing
 
 The table is organized by rendering engine rather than browser. On iOS, third-party browsers (Chrome, Firefox, Brave, etc.) are in practice still WebKit under the hood, so testing in Mobile Safari effectively covers them all.
 
@@ -117,7 +119,7 @@ Note that before shipping, we may use a service like BrowserStack or Playwright 
 
 ## Manual testing checklists
 
-Beyond that automated baseline, we work through established external checklists for the things automated audits don't cover:
+Beyond automated testing, which in our minds merely gets us to a baseline, we work through established external checklists for the things automated audits don't cover:
 
 - [WebAIM Evaluation Quick Reference](https://webaim.org/resources/evalquickref)
 - [WebAIM Checklist](https://webaim.org/standards/wcag/checklist/)
@@ -133,7 +135,9 @@ In addition, we run the following manual checks that automated tools largely can
 
 ## Assistive technology testing
 
-We don't yet own specialized hardware input devices (switches, head pointers, sip-and-puff controls, and the like), but keyboard-only navigation is a hard gate: nothing ships unless the entire page can be operated without ever touching the mouse. (Keyboard access isn't a stand-in for "motor impairment" specifically; it underpins the experience for screen-reader users, switch and voice-control users, and keyboard power users alike.) Our keystroke coverage: Tab, Shift+Tab, Enter, Space, Escape, the arrow keys (Up, Down, Left, Right), Home, End, Page Up, and Page Down. The arrow keys plus Home/End matter specifically for composite ARIA widgets (menus, tabs, listboxes, grids, etc.), as described in the [ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/).
+We don't currently have a process for procuring and testing hardware input devices (switches, head pointers, sip-and-puff controls, etc.), but taking UX research and usability testing to the next level is on our roadmap.
+
+In the meantime, keyboard-only navigation is a hard gate: nothing ships unless the entire page can be operated without ever touching the mouse. (Keyboard access isn't a stand-in for "motor impairment" specifically. It underpins the experience for screen-reader users, switch and voice-control users, and keyboard power users alike.) Our keystroke coverage: Tab, Shift+Tab, Enter, Space, Escape, the arrow keys (Up, Down, Left, Right), Home, End, Page Up, and Page Down. The arrow keys plus Home/End matter specifically for composite ARIA widgets (menus, tabs, listboxes, grids, etc.), as described in the [ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/).
 
 Beyond the keyboard, several software-based assistive technologies are testable on commodity hardware and are on our list to fold in: Voice Control (macOS/iOS) and Voice Access (Windows), OS-level screen magnification, and switch-control emulation (built into macOS, iOS, and Android).
 
@@ -145,20 +149,20 @@ We test everything with a screen reader. Current pairings:
 
 Known gaps we intend to close, in priority order:
 
-- **Android TalkBack:** we already test Android Chrome and Firefox, so testing their rendering without TalkBack leaves the actual Android AT experience unverified. This is our highest-priority addition.
-- **JAWS + Chrome:** per WebAIM's Screen Reader User Survey, this is the single most common real-world desktop pairing. We're currently deferring it only because JAWS is paid; NVDA is a reasonable (though not equivalent) free proxy in the meantime.
-- **Windows Narrator** and **Orca (Linux):** untested; lower priority given usage share, but noted for completeness.
+- **Android TalkBack:** we already test Android Chrome and Firefox, so testing their rendering without TalkBack leaves the actual Android assistive-technology experience unverified. This is our highest-priority addition.
+- **JAWS + Chrome:** per WebAIM's Screen Reader User Survey, this is the single most common real-world desktop pairing. We're currently deferring it only because JAWS is paid. NVDA is a reasonable (though not equivalent) free proxy in the meantime.
+- **Windows Narrator** and **Orca (Linux):** both untested and lower-priority given their usage share, but noted for completeness.
 
 ## Performance
 
-Lighthouse gives us lab performance scores, but field data matters too. We also check [PageSpeed Insights](https://pagespeed.web.dev/) and [WebPageTest](https://www.webpagetest.org/), and track Core Web Vitals via the Chrome UX Report where real-user data is available: Largest Contentful Paint, Interaction to Next Paint (INP, which replaced First Input Delay in 2024), and Cumulative Layout Shift. A minimal-JS, no-build framework should have a natural advantage here, and we treat that as a claim to verify rather than assume.
+Lighthouse gives us lab performance scores. For field data we use [PageSpeed Insights](https://pagespeed.web.dev/), which runs Lighthouse on Google's servers and overlays real-user Core Web Vitals from the Chrome UX Report: Largest Contentful Paint, Interaction to Next Paint (INP, which replaced First Input Delay in 2024), and Cumulative Layout Shift. We cross-check with [WebPageTest](https://www.webpagetest.org/). A minimal-JS, no-build framework should have a natural advantage here, and we treat that as a claim to verify rather than assume.
 
 ## On the horizon: WCAG 3.0
 
-Our conformance target is WCAG 2.2, the current W3C Recommendation (now also ISO/IEC 40500:2025). WCAG 3.0 (retitled the "W3C Accessibility Guidelines") is worth tracking but is still an early Working Draft (a fresh draft landed in March 2026) and is explicitly not citable as anything other than a work in progress. It proposes a different conformance model (graded outcomes with Bronze/Silver/Gold tiers rather than binary A/AA/AAA) and a broader scope beyond the web. Realistic projections put a Candidate Recommendation no earlier than roughly 2027, with a full Recommendation later still; 3.0 will coexist with 2.2 for years rather than replacing it overnight.
+Our conformance target is WCAG 2.2, the current W3C Recommendation (now also ISO/IEC 40500:2025). WCAG 3.0 (retitled the "W3C Accessibility Guidelines") is worth tracking but is still an early Working Draft (a fresh draft landed in March 2026) and is explicitly not citable as anything other than a work in progress. It proposes a different conformance model (graded outcomes with Bronze/Silver/Gold tiers rather than binary A/AA/AAA) and a broader scope beyond the web. Realistic projections put a Candidate Recommendation no earlier than roughly 2027, with a full Recommendation later still. Either way, 3.0 will coexist with 2.2 for years rather than replacing it overnight.
 
 One specific thing to watch: the Accessible Perceptual Contrast Algorithm (APCA) is often described as 3.0's replacement for the 2.x contrast-ratio math. It's promising, but it is *not* in the current normative draft, and the 3.0 contrast method is officially undecided, so we continue to design and verify against the 2.x ratios (which is what our color families are built on) and treat APCA as research to monitor.
 
 ## When we ship
 
-Only when every automated check is clean *and* every manual and assistive-technology check passes (navigable, clear, and working as intended) do we ship. The automated green light is necessary but not sufficient; the manual and AT passes are what we actually trust.
+Only when every automated check is clean *and* every manual and assistive-technology check passes (navigable, clear, and working as intended) do we ship. The automated green light is necessary but not sufficient. The manual and assistive-technology passes are what we actually trust.
